@@ -1,0 +1,22 @@
+const int hallPin = A0;
+const int ledPin  = 6;
+
+int filtered = 512;
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+
+void loop() {
+  int raw = analogRead(hallPin);
+
+  // Simple low-pass filter
+  filtered = filtered * 0.9 + raw * 0.1;
+
+  int strength = abs(filtered - 512);
+  int brightness = map(strength, 0, 350, 0, 255);
+  brightness = constrain(brightness, 0, 255);
+
+  analogWrite(ledPin, brightness);
+  delay(5);
+}
